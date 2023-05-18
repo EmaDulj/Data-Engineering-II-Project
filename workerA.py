@@ -6,14 +6,12 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 model_file = './model.joblib'
-data_file = './pima-indians-diabetes_test.csv'
+data_file = './data.csv'
 
 def load_data():
     dataset =  loadtxt(data_file, delimiter=',')
-    X = dataset[:,0:8]
-    y = dataset[:,8]
-    y = list(map(int, y))
-    y = np.asarray(y, dtype=np.uint8)
+    X = dataset.drop(['stars'] , axis =1)
+    y = dataset.stars
     return X, y
 
 def load_model():
@@ -26,7 +24,7 @@ def load_model():
 CELERY_BROKER_URL = 'amqp://rabbitmq:rabbitmq@rabbit:5672/'
 CELERY_RESULT_BACKEND = 'rpc://'
 # Initialize Celery
-celery = Celery('worker', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
+celery = Celery('workerA', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
 
 @celery.task
 def get_predictions():
@@ -47,7 +45,6 @@ def get_predictions():
 
 @celery.task
 def get_accuracy():
-    print("hej")
     X, y = load_data()
     loaded_model = load_model()
 
