@@ -8,7 +8,7 @@ from sklearn.metrics import r2_score
 from sklearn.ensemble import GradientBoostingRegressor
 
 # load the dataset
-dataset = pd.read_csv('PreprocessData.csv',index_col=0)
+dataset = pd.read_csv('1000random.csv',index_col=0)
 
 X = dataset.drop(['stars'] , axis =1)
 y = dataset.stars
