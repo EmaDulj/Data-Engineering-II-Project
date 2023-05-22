@@ -13,8 +13,8 @@ dataset = pd.read_csv('1000random.csv',index_col=0)
 X = dataset.drop(['stars'] , axis =1)
 y = dataset.stars
 
-s = StandardScaler()
-X = s.fit_transform(X)
+#s = StandardScaler()
+#X = s.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
 clf = GradientBoostingRegressor(verbose = 1, n_estimators = 500)
