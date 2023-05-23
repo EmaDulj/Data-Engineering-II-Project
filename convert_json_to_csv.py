@@ -9,8 +9,8 @@ from sklearn.preprocessing import LabelEncoder
 json_file = open("1000sorted.json", "r", encoding="utf-8")
 sh_json = json.load(json_file)
 json_file.close()
-data = {'size': [],
-        'stars':[],
+data = {'stars':[],
+        'size': [],
         'forks_count':[],
         'open_issues':[],
         'has_wiki':[],
@@ -70,7 +70,7 @@ for arr in sh_json:
 
 
 
-df = pd.DataFrame(data= data,columns=['size','stars','forks_count','open_issues','has_wiki','has_pages','has_issues','has_projects','num_topics','javascript','typescript','python','rust','other_language','desc_word_count','created_at','updated_at','pushed_at','has_homepage','license'])
+df = pd.DataFrame(data= data,columns=['stars','size','forks_count','open_issues','has_wiki','has_pages','has_issues','has_projects','num_topics','javascript','typescript','python','rust','other_language','desc_word_count','created_at','updated_at','pushed_at','has_homepage','license'])
 
 time_columns = ['created_at','updated_at','pushed_at']
 for column in time_columns:
