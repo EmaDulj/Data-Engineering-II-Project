@@ -1,23 +1,27 @@
 from joblib import dump, load
 from numpy import loadtxt
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from sklearn.metrics import r2_score
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import LogisticRegression
 
 # load the dataset
-dataset = pd.read_csv('1000random_updated.csv')
+dataset = pd.read_csv('1000random.csv')
+print(dataset.info())
 
 X = dataset.drop(['stars'] , axis =1)
+
 y = dataset.stars
 
-#s = StandardScaler()
-#X = s.fit_transform(X)
+s = StandardScaler()
+X = s.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=42)
-clf = GradientBoostingRegressor(verbose = 1, n_estimators = 500)
+#clf = LogisticRegression(random_state = 42, solver='lbfgs', multi_class='auto',max_iter=10000,C=0.1)
+clf = LogisticRegression(random_state = 42,max_iter=10000)
 clf.fit(X_train, y_train)
 
 test_score = r2_score(y_test, clf.predict(X_test))
