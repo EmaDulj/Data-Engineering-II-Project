@@ -22,8 +22,8 @@
    - name: Download git repository
      become: true
      git:
-      repo: 'https://github.com/sztoor/model_serving.git'
-      dest: /model_serving 
+      repo: 'https://github.com/EmaDulj/Data-Engineering-II-Project.git'
+      dest: /application_group12 
       
    - name: Change ownership of a directory
      become: true
@@ -37,7 +37,7 @@
 - hosts: prodserver
  
   vars_files:
-   - setup_var.yml  
+   - ansible-vars.yml  
   
   tasks:  
    - name: Extra packages
@@ -93,12 +93,12 @@
      become: true
      shell: docker compose up -d 
      args: 
-      chdir: /model_serving/ci_cd/production_server 
+      chdir: /application_group12/model_serving/production_server 
 
 - hosts: devserver
   
   vars_files:
-   - setup_var.yml
+   - ansible-vars.yml
 
   tasks:
    - name: Extra packages
