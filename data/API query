@@ -1,0 +1,5 @@
+To get random 100 repositories. To access next 100 change the page count.
+gh api --header 'Accept: application/vnd.github.v3.raw+json' --method GET "/search/repositories?q=stars:>50" -F per_page=100  -F page=1 > random_page1.json
+
+To get repositories sorted by the number of stars:
+gh api --header 'Accept: application/vnd.github.v3.raw+json' --method GET "/search/repositories?q=stars:>50&sort=stars" -F per_page=100 -F page=1 > sorted_page1.json
