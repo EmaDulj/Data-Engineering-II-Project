@@ -9,10 +9,13 @@ from sklearn.metrics import r2_score
 from sklearn.ensemble import RandomForestRegressor
 
 # load the dataset
+#dataset = pd.read_csv('with_author_details.csv')
+#dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
 #dataset = pd.read_csv('1000random_updated.csv',index_col=0)
 dataset = pd.read_csv('1000random.csv')
 print(dataset.info())
 
+#X = dataset.drop(['stars','author_type','has_pages','has_wiki'] , axis =1)
 X = dataset.drop(['stars'] , axis =1)
 
 y = dataset.stars
