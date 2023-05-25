@@ -8,9 +8,10 @@ from sklearn.metrics import r2_score
 from sklearn.ensemble import GradientBoostingRegressor
 
 # load the dataset
-dataset = pd.read_csv('1000random.csv')
-#dataset = pd.read_csv('with_author_details.csv')
-#dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
+#dataset = pd.read_csv('1000random.csv')
+dataset = pd.read_csv('with_more_fields.csv')
+dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
+dataset = dataset.replace('ERROR',300)
 #dataset = dataset.drop(['author_type','author_followers'],axis=1)
 X = dataset.drop(['stars'] , axis =1)
 #X = X[['forks_count','open_issues','pushed_at','updated_at']]
