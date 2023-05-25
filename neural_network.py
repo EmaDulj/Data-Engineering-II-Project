@@ -10,7 +10,10 @@ from sklearn.neural_network import MLPRegressor
 
 
 # load the dataset
-dataset = pd.read_csv('1000random.csv')
+#dataset = pd.read_csv('1000random.csv')
+dataset = pd.read_csv('with_more_fields.csv')
+dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
+dataset = dataset.replace('ERROR',300)
 #dataset = pd.read_csv('with_author_details.csv')
 #dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
 
