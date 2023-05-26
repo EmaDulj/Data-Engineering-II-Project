@@ -18,7 +18,7 @@ services:
         source: .
         target: /app
     ports:
-      - "5100:5100"
+      - "5000:5000"
     depends_on:
       - rabbit
   rabbit:
