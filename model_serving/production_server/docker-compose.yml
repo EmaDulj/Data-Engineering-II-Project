@@ -1,13 +1,5 @@
 version: "3"
 services:
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - web
-    ports:
-      - "80:80"
   web:
     build:
       context: .
@@ -21,6 +13,16 @@ services:
       - "5100:5100"
     depends_on:
       - rabbit
+    entrypoint: gunicorn
+    command: app:app -w 5 -b 0.0.0.0:5100 # worker number (2 x cores on prod machine) + 1
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+    ports:
+      - "80:80"
   rabbit:
     hostname: rabbit
     image: rabbitmq:management
@@ -34,13 +36,12 @@ services:
     build:
       context: .
       network: host
-    hostname: worker_1
     volumes:
       - type: bind
         source: .
         target: /app
     entrypoint: celery
-    command: -A workerA worker --loglevel=debug
+    command: -A workerA worker -n worker@%h --loglevel=info
     links:
       - rabbit
     depends_on:
