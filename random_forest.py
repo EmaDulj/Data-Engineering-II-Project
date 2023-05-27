@@ -9,13 +9,11 @@ from sklearn.metrics import r2_score
 from sklearn.ensemble import RandomForestRegressor
 
 # load the dataset
-#dataset = pd.read_csv('with_author_details.csv')
-#dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
-#dataset = pd.read_csv('1000random_updated.csv',index_col=0)
-dataset = pd.read_csv('with_more_fields.csv')
+dataset = pd.read_csv('fullset_with_more_fields.csv')
+for column in dataset.columns:
+    dataset = dataset.drop(dataset[dataset[str(column)] == 'ERROR'].index)
 dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
-dataset = dataset.replace('ERROR',300)
-#dataset = pd.read_csv('1000random.csv')
+
 print(dataset.info())
 
 #X = dataset.drop(['stars','author_type','has_pages','has_wiki'] , axis =1)
@@ -27,7 +25,7 @@ s = StandardScaler()
 X = s.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=42)
-clf = RandomForestRegressor(n_jobs=-1, n_estimators=200, verbose=1, random_state=42)
+clf = RandomForestRegressor(n_jobs=-1, n_estimators=190, random_state=42)
 clf.fit(X_train, y_train)
 
 test_score = r2_score(y_test, clf.predict(X_test))

@@ -10,10 +10,13 @@ from sklearn.neighbors import KNeighborsRegressor
 
 
 # load the dataset
-dataset = pd.read_csv('1000random.csv')
+dataset = pd.read_csv('fullset_with_more_fields.csv')
+for column in dataset.columns:
+    dataset = dataset.drop(dataset[dataset[str(column)] == 'ERROR'].index)
+dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
 print(dataset.info())
 
-X = dataset.drop(['stars'] , axis =1)
+X = dataset.drop(['stars','author_type','has_pages','comments'] , axis =1)
 
 y = dataset.stars
 
@@ -21,8 +24,12 @@ s = StandardScaler()
 X = s.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=42)
+from sklearn.linear_model import LinearRegression
 
-clf = KNeighborsRegressor(n_neighbors=15)
+clf = LinearRegression()
+
+
+#clf = KNeighborsRegressor(n_neighbors=25)
 clf.fit(X_train, y_train)
 
 test_score = r2_score(y_test, clf.predict(X_test))
