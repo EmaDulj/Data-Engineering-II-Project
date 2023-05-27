@@ -9,7 +9,10 @@ from sklearn.metrics import r2_score
 from sklearn.linear_model import LogisticRegression
 
 # load the dataset
-dataset = pd.read_csv('1000random.csv')
+dataset = pd.read_csv('fullset_with_more_fields.csv')
+for column in dataset.columns:
+    dataset = dataset.drop(dataset[dataset[str(column)] == 'ERROR'].index)
+dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
 print(dataset.info())
 
 X = dataset.drop(['stars'] , axis =1)
