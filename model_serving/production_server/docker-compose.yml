@@ -10,7 +10,7 @@ services:
         source: .
         target: /app
     ports:
-      - "5100:5100"
+      - "5100"
     depends_on:
       - rabbit
     entrypoint: gunicorn
