@@ -14,9 +14,7 @@ for column in dataset.columns:
     dataset = dataset.drop(dataset[dataset[str(column)] == 'ERROR'].index)
 dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
 
-print(dataset.info())
 
-#X = dataset.drop(['stars','author_type','has_pages','has_wiki'] , axis =1)
 X = dataset.drop(['stars'] , axis =1)
 
 y = dataset.stars
@@ -25,7 +23,7 @@ s = StandardScaler()
 X = s.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=42)
-clf = RandomForestRegressor(n_jobs=-1, n_estimators=190, random_state=42)
+clf = RandomForestRegressor(n_jobs=-1, n_estimators=200, random_state=42)
 clf.fit(X_train, y_train)
 
 test_score = r2_score(y_test, clf.predict(X_test))

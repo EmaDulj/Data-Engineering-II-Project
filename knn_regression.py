@@ -16,7 +16,7 @@ for column in dataset.columns:
 dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
 print(dataset.info())
 
-X = dataset.drop(['stars','author_type','has_pages','comments'] , axis =1)
+X = dataset.drop(['stars'] , axis =1)
 
 y = dataset.stars
 
