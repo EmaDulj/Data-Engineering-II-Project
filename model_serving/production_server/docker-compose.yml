@@ -22,7 +22,7 @@ services:
     depends_on:
       - flask
     ports:
-      - "80:80"
+      - "8080:8080"
   rabbit:
     hostname: rabbit
     image: rabbitmq:management
