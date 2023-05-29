@@ -3,5 +3,6 @@ amqp
 celery
 gunicorn
 joblib
-sklearn
+scikit-learn
 numpy
+pandas

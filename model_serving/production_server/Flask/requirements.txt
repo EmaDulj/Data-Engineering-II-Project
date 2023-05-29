@@ -1,8 +1,0 @@
-Flask
-amqp
-celery
-gunicorn
-joblib
-scikit-learn
-numpy
-pandas
