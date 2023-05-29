@@ -1,0 +1,8 @@
+Flask
+amqp
+celery
+pandas
+gunicorn
+joblib
+scikit-learn
+numpy

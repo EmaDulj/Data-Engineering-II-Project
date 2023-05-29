@@ -1,72 +1,47 @@
 from celery import Celery
-
+from joblib import dump, load
 from numpy import loadtxt
 import numpy as np
-from tensorflow.keras.models import model_from_json
-
-# TODO: Change the following field with our data
-model_json_file = "./model.json"
-model_weights_file = "./model.h5"
-data_file = "./pima-indians-diabetes.csv"
-
+import pandas as pd 
+model_file = './model.joblib'
+data_file = './data.csv'
 
 def load_data():
-    dataset = loadtxt(data_file, delimiter=",")
-    X = dataset[:, 0:8]
-    y = dataset[:, 8]
-    y = list(map(int, y))
-    y = np.asarray(y, dtype=np.uint8)
+    dataset = pd.read_csv(data_file)
+    for column in dataset.columns:
+        dataset = dataset.drop(dataset[dataset[str(column)] == 'ERROR'].index)
+    dataset['author_type'] = dataset.author_type.apply(lambda x: 1 if x=='User' else 0)
+    X = dataset.drop(['stars'] , axis =1)
+    y = dataset.stars
     return X, y
 
-
 def load_model():
-    # load json and create model
-    json_file = open(model_json_file, "r")
-    loaded_model_json = json_file.read()
-    json_file.close()
-    loaded_model = model_from_json(loaded_model_json)
-    # load weights into new model
-    loaded_model.load_weights(model_weights_file)
-    # print("Loaded model from disk")
-    return loaded_model
-
+    loaded_clf = load('model.joblib') 
+    return loaded_clf
 
 # Celery configuration
-CELERY_BROKER_URL = "amqp://rabbitmq:rabbitmq@rabbit:5672/"
-CELERY_RESULT_BACKEND = "rpc://"
+CELERY_BROKER_URL = 'amqp://rabbitmq:rabbitmq@rabbit:5672/'
+CELERY_RESULT_BACKEND = 'rpc://'
 # Initialize Celery
-celery = Celery("workerA", broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
-
-
-@celery.task()
-def add_nums(a, b):
-    return a + b
-
+celery = Celery('workerA', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
 
 @celery.task
 def get_predictions():
-    results = {}
+    results ={}
     X, y = load_data()
     loaded_model = load_model()
     predictions = np.round(loaded_model.predict(X)).flatten().astype(np.int32)
-    results["y"] = y.tolist()
-    results["predicted"] = predictions.tolist()
-    # print ('results[y]:', results['y'])
-    # for i in range(len(results['y'])):
-    # print('%s => %d (expected %d)' % (X[i].tolist(), predictions[i], y[i]))
-    # results['predicted'].append(predictions[i].tolist()[0])
-    # print ('results:', results)
+    results['y'] = y.tolist()
+    results['predicted'] = predictions.tolist()
     return results
-
 
 @celery.task
 def get_accuracy():
     X, y = load_data()
     loaded_model = load_model()
-    loaded_model.compile(
-        loss="binary_crossentropy", optimizer="rmsprop", metrics=["accuracy"]
-    )
 
-    score = loaded_model.evaluate(X, y, verbose=0)
-    # print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
-    return score[1] * 100
+    score = loaded_model.score(X, y)
+    return f"{score*100:.2f}%"
+
+if __name__ == "__main__":
+    get_accuracy()

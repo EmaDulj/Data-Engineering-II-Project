@@ -2,7 +2,7 @@ version: "3"
 services:
   flask:
     build:
-      context: .
+      context: Flask
       network: host
     restart: always
     volumes:
@@ -34,7 +34,7 @@ services:
       - "15672:15672"
   celery:
     build:
-      context: .
+      context: Celery
       network: host
     volumes:
       - type: bind
