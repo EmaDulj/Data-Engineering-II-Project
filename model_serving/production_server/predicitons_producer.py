@@ -29,7 +29,11 @@ y = np.array(y_test)
 
 rows_id = random.sample(range(0, X_test.shape[0]-1), 5)
 
-import joblib
 model = joblib.load('model.joblib')
-print(model.predict(X_test[rows_id]))
-print(y[rows_id])
+predicted = model.predict(X_test[rows_id])
+acctual = y[rows_id]
+
+df=pd.DataFrame(data=[predicted, acctual]).T
+df.columns=['Predicted','Acctual']
+df = df.sort_values('Predicted', ascending=False)
+print(df)
