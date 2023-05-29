@@ -2,7 +2,7 @@ Flask
 amqp
 celery
 gunicorn
-tensorflow==2.10.0 
-keras==2.10.0
+joblib
+scikit-learn
 numpy
-future
+pandas
