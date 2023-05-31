@@ -11,3 +11,8 @@ We used Git Hooks to push files from the development server to the production. I
 On the development server ("model_serving/development_server") we have evaluated a couple of models, choose the best one (Random Forest) and trained it on parallel by having a Ray cluster ("training_on_ray.py"). The head was on the development server and we started two additional workers. You can see all the needed Ray documentation here https://docs.ray.io/en/latest/cluster/vms/user-guides/launching-clusters/on-premises.html#on-prem. After training the trained model ("model.joblib" file) is pushed to the production server. 
 
 On the production server ("model_serving/production_server") are all the files for a Flask based web application as a frontend server and a Celery and RabbitMQ server for backend server. There is also the pushed model and the data set, as well as the code for running the predictions for 5 repositories. We have added "nginx.conf" to manage the requests for the application. 
+
+Instructions for data fetching from URL Links
+To run the data collection scripts you need to add github PAT to the right place.
+The script is automated to switch between multiple tokens to avoid distruptions due to request limitations
+Add atleast 3 tokens to the array for better performance - and change the number of tokens parameter appropriately
