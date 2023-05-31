@@ -12,7 +12,11 @@ On the development server ("model_serving/development_server") we have evaluated
 
 On the production server ("model_serving/production_server") are all the files for a Flask based web application as a frontend server and a Celery and RabbitMQ server for backend server. There is also the pushed model and the data set, as well as the code for running the predictions for 5 repositories. We have added "nginx.conf" to manage the requests for the application. 
 
-Instructions for data fetching from URL Links
+Instructions for data fetching from URL Links:
 To run the data collection scripts you need to add github PAT to the right place.
-The script is automated to switch between multiple tokens to avoid distruptions due to request limitations
-Add atleast 3 tokens to the array for better performance - and change the number of tokens parameter appropriately
+The script is automated to switch between multiple tokens to avoid distruptions due to request limitations.
+Add atleast 3 tokens to the array for better performance - and change the number of tokens parameter appropriately.
+
+Instructions to run distributed hyper-parameter tuning:
+Use the sh file in distributed tuning folder to set up the VM annd install all necessary packages.
+Change the IP to connect to the ray master node. Change the number of CPU as necessary. Start VM by VM and do the scalability tests.
